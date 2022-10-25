@@ -88,6 +88,7 @@ class ReferenceManager(models.Manager):
 class List(models.Model):
     """
     The list object - a container for many items that are related
+    Mod 10/22
     """
     name = models.CharField(max_length=100, unique=True)
     purpose = models.CharField(max_length=200, blank=False)
@@ -116,7 +117,7 @@ class List(models.Model):
 class Merchant(models.Model):
     name = models.CharField(max_length=50, unique=False, blank=False)
     date_added = models.DateField(auto_now=False, auto_now_add=True)  # make M2M? no
-    for_group = models.ForeignKey(ListGroup, blank=False, null=False, on_delete=models.CASCADE)
+    for_group = models.ForeignKey(List, blank=False, null=False, on_delete=models.CASCADE)
     objects = MerchantManager()
 
     class Meta:
@@ -139,7 +140,7 @@ class Item(models.Model):
     date_requested = models.DateField(auto_now=False, auto_now_add=True)
     date_purchased = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
     to_get_from = models.ForeignKey(Merchant, blank=True, null=True, on_delete=models.CASCADE)
-    in_group = models.ForeignKey(ListGroup, blank=False, null=False, on_delete=models.CASCADE)
+    in_group = models.ForeignKey(List, blank=False, null=False, on_delete=models.CASCADE)
     objects = ItemManager()
 
     class Meta:
@@ -187,7 +188,7 @@ class Support(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    in_group = models.ForeignKey(ListGroup, blank=False, null=False, on_delete=models.CASCADE)
+    in_group = models.ForeignKey(List, blank=False, null=False, on_delete=models.CASCADE)
     active = models.BooleanField(blank=False, null=False, default=True)
     objects = CategoryManager()
 
@@ -206,7 +207,7 @@ class ReferenceItem(models.Model):
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.PROTECT)
     recommendation = models.CharField(max_length=100)
     date_added = models.DateField(auto_now=False, auto_now_add=True)
-    in_group = models.ForeignKey(ListGroup, blank=False, null=False, on_delete=models.CASCADE)
+    in_group = models.ForeignKey(List, blank=False, null=False, on_delete=models.CASCADE)
     objects = ReferenceManager()
 
     class Meta:

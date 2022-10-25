@@ -11,12 +11,14 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, Ht
 from datetime import date
 import logging
 log = logging.getLogger("info_logger")
-# from .forms import ItemForm, MerchantForm, ListGroupForm, UsersGroupsForm, NewGroupCreateForm, SupportLogForm
+from .forms import NewListCreateForm
+    # ItemForm, MerchantForm, ListGroupForm, UsersGroupsForm, NewGroupCreateForm, SupportLogForm
 from .models import Item, Merchant, List, Support
 # from listapp.utils import *
 # Views related to the lists
 
 
+################################# GROUP #################################
 # @login_required
 def user_lists(request):
     """
@@ -35,3 +37,36 @@ def user_lists(request):
         'notice': notice,
     }
     return render(request, 'user_lists.html', context)
+
+
+# @login_required
+def list_detail(request, pk=None, list_obj=None):
+    log.info(f'user = {request.user.username}| id = {pk}')
+    if pk:
+        list_obj = get_object_or_404(List, pk=pk)
+
+    if request.method == "POST":
+        form = NewListCreateForm(request.POST, instance=list_obj)
+        if form.is_valid():
+            new_list = form.save(commit=False)
+            new_list.name = form.cleaned_data['joining']
+            new_list.purpose = form.cleaned_data['purpose']
+            new_list.manager = request.user
+            new_list.save()
+            new_list.members.add(request.user)
+            new_list.leaders.add(request.user)
+
+            return HttpResponseRedirect(reverse('lists:user_list'))
+        else:
+            log.info(f'Form errors: {form.errors}')
+    else:
+        form = NewListCreateForm(instance=list_obj)  # will be none if new
+
+    template_name = 'list.html'
+    log.info(f'Outside Post section')
+    context = {
+        'title': 'Create or Update List',
+        'form': form,
+        'notice': '',
+    }
+    return render(request, template_name, context)
