@@ -1,3 +1,4 @@
+from datetime import date
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,18 +8,19 @@ from django.urls import reverse
 from django.db import DatabaseError
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, Http404, redirect
-
-from datetime import date
-import logging
-log = logging.getLogger("info_logger")
 from .forms import NewListCreateForm
     # ItemForm, MerchantForm, ListGroupForm, UsersGroupsForm, NewGroupCreateForm, SupportLogForm
 from .models import Item, Merchant, List, Support
+
+
+import logging
+log = logging.getLogger("info_logger")
+
 # from listapp.utils import *
 # Views related to the lists
 
 
-################################# GROUP #################################
+#  ################################ GROUP #################################
 # @login_required
 def user_lists(request):
     """

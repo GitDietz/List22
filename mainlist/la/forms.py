@@ -17,6 +17,12 @@ class NewListCreateForm(forms.ModelForm):
         model = List
         fields = ['joining', 'purpose']
 
+    def clean(self):
+        cleaned_data = super().clean()
+        join = cleaned_data.get('joining', None)
+        purp = cleaned_data.get('purpose', None)
+        return cleaned_data
+
     def clean_joining(self):
         target_list = self.cleaned_data.get('joining')
         # now check that the group does not exists and create it, rather do this in the form
