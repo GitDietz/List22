@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views import defaults as default_views
 
-from .views_list import (list_detail, user_lists)
+from .views_list import (items_list, item_create,
+                         list_detail, user_lists)
 
 app_name = 'lists'
 
@@ -14,4 +15,8 @@ urlpatterns = [
     # path('note_update_ajax', note_update_ajax, name='note_update_ajax'),
     path('list_create', list_detail, name='list_create'),
     re_path(r'list_detail/(?P<pk>\d+)/(?P<list_obj>)', list_detail, name='list_detail'),
+
+    re_path(r'item_create/(?P<pk>\d+)', item_create, name='item_create'),
+
+    re_path('items_list/(?P<pk>\d+)', items_list, name='items_list'),
     ]

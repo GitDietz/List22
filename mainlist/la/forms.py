@@ -40,3 +40,31 @@ class NewListCreateForm(forms.ModelForm):
             return what_purpose
         else:
             raise ValidationError("Purpose is required")
+
+
+class ItemForm(forms.ModelForm):
+    description = forms.CharField()
+
+    class Meta:
+        model = Item
+        fields = [
+            'description',
+            'quantity',
+            'to_get_from',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        """ this limits the selection options to only the active list for the user"""
+        list = kwargs.pop('list')
+        merchant_list = Merchant.objects.filter(for_group_id=list)
+        super().__init__(*args, **kwargs)
+        self.fields['to_get_from'].queryset = merchant_list
+
+    def clean_description(self):
+        return self.cleaned_data['description'].title()
+
+    def clean_to_get_from(self):
+        return self.cleaned_data['to_get_from']
+
+    def clean_quantity(self):
+        return self.cleaned_data['quantity']

@@ -1,12 +1,13 @@
-{% load static i18n %}<!DOCTYPE html>
+<!DOCTYPE html>
+{% load static i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}MainList{% endblock title %}</title>
+    <title>{% block title %}Lists{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Behold My Awesome Project!">
+    <meta name="description" content="Manage your lists">
     <meta name="author" content="D. Thierry">
 
     <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
@@ -48,6 +49,9 @@
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'lists:user_lists' %}">My Lists</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'about' %}">About</a>

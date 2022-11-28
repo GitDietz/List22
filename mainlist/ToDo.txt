@@ -1,0 +1,2 @@
+Add logger formatting from other projects - more similar to regular logs
+

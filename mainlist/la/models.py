@@ -34,8 +34,8 @@ class ItemManager(models.Manager):
         qs = super(ItemManager, self).filter(purchased=None).filter(cancelled=None).order_by(Lower('description'))
         return qs
 
-    def to_get_by_group(self, group_id):
-        qs = super(ItemManager, self).filter(purchased=None).filter(cancelled=None).filter(in_group=group_id).\
+    def to_get_by_list(self, list_pk):
+        qs = super(ItemManager, self).filter(purchased=None).filter(cancelled=None).filter(in_group=list_pk).\
             order_by(Lower('description'))
         return qs
 
@@ -58,6 +58,10 @@ class ListManager(models.Manager):
     def filter_by_instance(self, instance):
         obj_id = instance.id
         qs = super(ListManager, self).filter(object_id=obj_id)
+        return qs
+
+    def get_by_id(self, pk):
+        qs = super(ListManager, self).filter(object_id=pk)
         return qs
 
     def managed_by(self, user):
