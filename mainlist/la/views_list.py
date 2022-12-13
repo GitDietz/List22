@@ -211,6 +211,7 @@ def items_list(request, pk):
     """
     Manage display of items in the list based on the pk of the list
     WIP 24/11
+    :url  http://127.0.0.1:8000/lists/items_list/1
     :param request:
     :param pk: is the list containing the items
     :return:
@@ -249,6 +250,7 @@ def items_list(request, pk):
         'title': 'Your list',
         'object_list': queryset_list,
         'active_list': active_list.name,
+        'list_pk': pk,
         # 'user_lists': user_list_options,
         'is_leader': leader_status,
         'notice': notice,
@@ -259,7 +261,7 @@ def items_list(request, pk):
 
 def item_create(request, pk):
     """
-
+    :url http://127.0.0.1:8000/lists/item_create/1
     :param request:
     :param pk: the list PK
     :return: back to the list
@@ -306,3 +308,38 @@ def item_create(request, pk):
         'no_of_lists': user_list_options,
     }
     return render(request, 'item_create.html', context)
+
+
+def item_edit(request, pk):
+    """
+    :url http://127.0.0.1:8000/lists/item_create/1
+    :param request:
+    :param pk: the item PK
+    :return: back to the list
+    """
+    logging.info(f"view entered | user = {request.user.username}")
+    item = get_object_or_404(Item, pk=pk)
+    active_list = item.in_group.id
+    user_is_leader = False
+    if request.user in item.in_group.leaders.all():
+        user_is_leader = True
+
+    if request.user == item.requested or user_is_leader:
+        if request.method == "POST":
+            logging.info(f"Posted form for {item}")
+            form = ItemForm(request.POST, instance=item, list=active_list)
+            if form.is_valid():
+                logging.info(f"valid form submitted")
+                form.save()
+                return HttpResponseRedirect(reverse('lists:items_list', kwargs={'pk': active_list}))
+
+        template_name = 'item_detail.html'
+        context = {
+            'title': 'Update Item',
+            'form': ItemForm(instance=item, list=active_list),
+            'notice': '',
+        }
+        return render(request, template_name, context)
+    else:
+        logging.info(f"diverting to the list view")
+        return redirect('lists:items_list pk=active_list')

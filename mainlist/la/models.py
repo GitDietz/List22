@@ -151,13 +151,19 @@ class Item(models.Model):
         ordering = ['description']
 
     def __str__(self):
-        this_merchant = self.to_get_from.name
+        if self.to_get_from:
+            this_merchant = self.to_get_from.name
+        else:
+            this_merchant = 'Not listed'
         label = self.description.title()
         if len(self.quantity) > 0:
             label = label + '[' + self.quantity + ']'
         if this_merchant:
             label = label + ' @ ' + this_merchant
         return str(label)
+
+    def __repr__(self):
+        return self.description.title()
 
     def get_absolute_url(self):
         return reverse("detail", kwargs={"id": self.pk})
