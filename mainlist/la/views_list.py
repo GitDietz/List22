@@ -1,5 +1,6 @@
 from datetime import date
 from django.conf import settings
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -210,7 +211,6 @@ def items_list_old(request, pk):
 def items_list(request, pk):
     """
     Manage display of items in the list based on the pk of the list
-    WIP 24/11
     :url  http://127.0.0.1:8000/lists/items_list/1
     :param request:
     :param pk: is the list containing the items
@@ -338,6 +338,7 @@ def item_edit(request, pk):
             'title': 'Update Item',
             'form': ItemForm(instance=item, list=active_list),
             'notice': '',
+            'object': item,
         }
         return render(request, template_name, context)
     else:

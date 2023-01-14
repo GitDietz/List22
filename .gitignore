@@ -326,4 +326,4 @@ tags
 mainlist/media/
 
 .pytest_cache/
-*.env
+.env

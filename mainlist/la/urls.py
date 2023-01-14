@@ -6,6 +6,7 @@ from django.views import defaults as default_views
 
 from .views_list import (items_list, item_create, item_edit,
                          list_detail, user_lists)
+from .views_merchant import merchant_create, merchant_list, merchant_update, merchant_delete
 
 app_name = 'lists'
 
@@ -21,4 +22,11 @@ urlpatterns = [
     re_path(r'item_create/(?P<pk>\d+)', item_create, name='item_create'),
     re_path(r'item_edit/(?P<pk>\d+)', item_edit, name='item_edit'),
     re_path(r'items_list/(?P<pk>\d+)', items_list, name='items_list'),
+
+    # merchant
+    re_path(r'merchant_create/(?P<pk>\d+)', merchant_create, name='merchant_create'),
+    re_path(r'merchant_list/(?P<pk>\d+)', merchant_list, name='merchant_list'),
+    re_path(r'merchant_edit/(?P<pk>\d+)', merchant_update, name='merchant_update'),
+    re_path(r'merchant_delete/(?P<pk>\d+)', merchant_delete, name='merchant_delete'),
+
     ]

@@ -3,17 +3,18 @@
 {% block content %}
 <p class="font-italic">{% if notice %}{{ notice }}{% endif %}</p>
 <form method="POST" action="." >{% csrf_token %}
-    {{ form|crispy }}
+
     <h1>Viewing list "{{ active_list }}"</h1>
     {% if user_lists > 1 %} WIP
-    {%comment%}
+    {% comment %}
         <a href="{% url 'shop:group_select' %}" class="top-menu"><i class="far fa-random" title="Switch to other list"></i></a>
       {% endcomment %}
     {% endif %}<br>
     {% if leader_list %}
         Leader/s: {{ leader_list }}<br>
     {% endif%}
-<a href="{% url 'lists:item_create' pk=list_pk %}" class="top-menu">Add item</a><br>
+  <a href="{% url 'lists:merchant_list' pk=list_pk %}" class="top-menu">Merchants</a><br>
+  <a href="{% url 'lists:item_create' pk=list_pk %}" class="top-menu">Add item</a><br>
 {% if object_list%}
 
 {% for obj in object_list %}

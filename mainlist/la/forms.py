@@ -68,3 +68,12 @@ class ItemForm(forms.ModelForm):
 
     def clean_quantity(self):
         return self.cleaned_data['quantity']
+
+
+class MerchantForm(forms.ModelForm):
+    """
+    For gets driven from the list and will use the list reference
+    """
+    class Meta:
+        model = Merchant
+        fields = ['name']
