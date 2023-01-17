@@ -28,7 +28,17 @@ CACHES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
-)
+)   # the env value will set this to
+# -------------------------------adding the sendgrid setup to test it----------------------------------------------
+#
+# SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default="List Master <noreply@asharpsystems.com>")
+# EMAIL_SUBJECT_PREFIX = env("DJANGO_EMAIL_SUBJECT_PREFIX", default="[List Master]")
+# INSTALLED_APPS += ["anymail"]  # noqa F405
+# SENDGRID_API_KEY = env("SENDGRID_API_KEY")
+# ANYMAIL = {
+#     "SENDGRID_API_KEY": env("SENDGRID_API_KEY"),
+#     "SENDGRID_API_URL": env("SENDGRID_API_URL", default="https://api.sendgrid.com/v3/"),
+# }
 
 # WhiteNoise
 # ------------------------------------------------------------------------------

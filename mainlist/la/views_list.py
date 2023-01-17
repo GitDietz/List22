@@ -240,11 +240,13 @@ def items_list(request, pk):
                         instance.purchased = request.user
                         instance.date_purchased = date.today()
                     instance.save()
+                    queryset_list = Item.objects.to_get_by_list(pk)
+                else:
+                    notice = "You can't update the items"
+                    log.info(f"no permission to update | user = {request.user.username}")
             else:
                 log.info(f'No objects to update')
-        elif request.POST:
-            notice = "You can't update the items"
-            log.info(f"no permission to update | user = {request.user.username}")
+        #
 
     context = {
         'title': 'Your list',

@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <p class="font-italic">{% if notice %}{{ notice }}{% endif %}</p>
-<form method="POST" action="." >{% csrf_token %}
+<form method="POST" action="{% url 'lists:items_list' pk=list_pk %}" >{% csrf_token %}
 
     <h1>Viewing list "{{ active_list }}"</h1>
     {% if user_lists > 1 %} WIP
@@ -19,27 +19,30 @@
 
 {% for obj in object_list %}
     <div class="row p-1 mb-2 bg-light text-dark">
-        <div class="col-md-8 col-xs-8">{{ obj.name_qty }}
+        <div class="col-md-6 col-xs-6">{{ obj.name_qty }}
 
             {% if obj.to_get_from != None %}
             <span class="text-info font-weight-light"> @ {{ obj.to_get_from }}
             {% if obj.in_group != None %}{% endif %}
             </span> {% endif %}
         </div>
-        <div class="col-md-4 col-xs-4">
-          {% comment %} the requester or leader can action the item, all others can view it,
-          the next sections makes the buttons appear for action          {% endcomment %}
-            {% if request.user == obj.requested or is_leader %}
-                <button type="submit" name="got_item|{{ obj.id }}" class="btn btn-success btn-sm">
-                    <i class="bi bi-check-circle"></i>
-                </button>
-                <button type="submit" name="cancel_item|{{ obj.id }}" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-x-circle"></i>
-                </button>
-                <a href="{% url 'lists:item_edit' pk=obj.pk %}"><i class="bi bi-pen"></i></a>
-            {% endif %}
-            <div class="fs-6">{{ obj.date_requested | date:"d M"}} ({{ obj.requested.first_name }})</div>
+        <div class="col-md-2 col-xs-2">
+
+          {% if request.user == obj.requested or is_leader %}
+            <button type="submit" name="got_item|{{ obj.id }}" class="btn btn-success btn-sm">
+              <i class="bi bi-check-circle" title="Done"></i>
+            </button>
+            <button type="submit" name="cancel_item|{{ obj.id }}" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-x-circle" title="Remove"></i>
+            </button>
+            <a href="{% url 'lists:item_edit' pk=obj.pk %}"><i class="bi bi-pen" title="Edit"></i></a>
+          {% endif %}
+          </div>
+        <div class="col-md-3 col-xs-3">
+          <p class="fs-6 fw-lighter">{{ obj.date_requested | date:"d M"}} ({{ obj.requested.first_name }})</p>
         </div>
+
+
     </div>
 {% endfor %}
 
